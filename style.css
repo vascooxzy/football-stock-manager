@@ -1,87 +1,170 @@
-let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
-
-function adicionarProduto() {
-
-  const liga = document.getElementById('liga').value;
-  const clube = document.getElementById('clube').value;
-  const epoca = document.getElementById('epoca').value;
-  const tipo = document.getElementById('tipo').value;
-  const tamanho = document.getElementById('tamanho').value;
-  const quantidade = Number(document.getElementById('quantidade').value);
-  const preco = Number(document.getElementById('preco').value);
-  const frete = Number(document.getElementById('frete').value);
-  const venda = Number(document.getElementById('venda').value);
-
-  const cliente = document.getElementById('cliente').value;
-  const telefone = document.getElementById('telefone').value;
-  const morada = document.getElementById('morada').value;
-  const cep = document.getElementById('cep').value;
-  const pais = document.getElementById('pais').value;
-  const localidade = document.getElementById('localidade').value;
-  const rastreio = document.getElementById('rastreio').value;
-
-  const custo = preco + frete;
-  const lucro = (venda - custo) * quantidade;
-
-  const produto = {
-    liga,
-    clube,
-    epoca,
-    tipo,
-    tamanho,
-    quantidade,
-    preco,
-    frete,
-    venda,
-    custo,
-    lucro,
-    cliente,
-    telefone,
-    morada,
-    cep,
-    pais,
-    localidade,
-    rastreio
-  };
-
-  produtos.push(produto);
-
-  localStorage.setItem('produtos', JSON.stringify(produtos));
-
-  renderizarProdutos();
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-function renderizarProdutos() {
-
-  const tabela = document.getElementById('tabelaProdutos');
-
-  tabela.innerHTML = '';
-
-  let totalStock = 0;
-  let lucroTotal = 0;
-
-  produtos.forEach(produto => {
-
-    totalStock += produto.quantidade;
-    lucroTotal += produto.lucro;
-
-    tabela.innerHTML += `
-      <tr>
-        <td>${produto.clube}</td>
-        <td>${produto.tamanho}</td>
-        <td>${produto.quantidade}</td>
-        <td>${produto.custo}€</td>
-        <td>${produto.venda}€</td>
-        <td>${produto.lucro}€</td>
-        <td>${produto.cliente}</td>
-        <td>${produto.rastreio}</td>
-      </tr>
-    `;
-  });
-
-  document.getElementById('totalStock').innerText = totalStock;
-  document.getElementById('lucroTotal').innerText = lucroTotal + '€';
-  document.getElementById('vendidos').innerText = produtos.length;
+body{
+    font-family:Arial, sans-serif;
+    background:#0f172a;
+    color:white;
 }
 
-renderizarProdutos();
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:260px;
+    background:#111827;
+    padding:30px 20px;
+    border-right:1px solid #1e293b;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:40px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.logo svg{
+    width:28px;
+    height:28px;
+}
+
+nav{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+nav a{
+    color:#cbd5e1;
+    text-decoration:none;
+    padding:14px;
+    border-radius:10px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    background:#1e293b;
+}
+
+.main-content{
+    flex:1;
+    padding:40px;
+}
+
+header h1{
+    font-size:38px;
+    margin-bottom:30px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:#1e293b;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+
+.card h3{
+    color:#94a3b8;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:34px;
+    font-weight:bold;
+}
+
+.form-section,
+.table-section{
+    background:#1e293b;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:30px;
+}
+
+.form-section h2{
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+input,
+select{
+    background:#0f172a;
+    border:1px solid #334155;
+    padding:14px;
+    border-radius:10px;
+    color:white;
+    width:100%;
+}
+
+input::placeholder{
+    color:#64748b;
+}
+
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    color:#94a3b8;
+    padding:16px;
+    border-bottom:1px solid #334155;
+}
+
+td{
+    padding:16px;
+    border-bottom:1px solid #334155;
+}
+
+tr:hover{
+    background:#0f172a;
+}
+
+@media(max-width:900px){
+
+    .app{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+    }
+
+}
