@@ -2,115 +2,332 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jersey Stock Manager</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KitStock — Gestão de Camisolas</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
 
-<div class="app">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon"><i class="fa-solid fa-shirt"></i></span>
+    <span class="logo-text">Kit<strong>Stock</strong></span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Principal</div>
+    <a href="#" class="nav-item active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a>
+    <a href="#" class="nav-item" data-page="stock"><i class="fa-solid fa-boxes-stacked"></i><span>Gestão de Stock</span></a>
+    <a href="#" class="nav-item" data-page="clientes"><i class="fa-solid fa-truck-fast"></i><span>Clientes / Envios</span></a>
+    <div class="nav-group-label">Ligas</div>
+    <a href="#" class="nav-item nav-liga" data-liga="Primeira Liga"><i class="fa-solid fa-futbol"></i><span>Primeira Liga</span></a>
+    <a href="#" class="nav-item nav-liga" data-liga="Premier League"><i class="fa-solid fa-futbol"></i><span>Premier League</span></a>
+    <a href="#" class="nav-item nav-liga" data-liga="La Liga"><i class="fa-solid fa-futbol"></i><span>La Liga</span></a>
+    <a href="#" class="nav-item nav-liga" data-liga="Serie A"><i class="fa-solid fa-futbol"></i><span>Serie A</span></a>
+    <a href="#" class="nav-item nav-liga" data-liga="Bundesliga"><i class="fa-solid fa-futbol"></i><span>Bundesliga</span></a>
+    <a href="#" class="nav-item nav-liga" data-liga="Seleções"><i class="fa-solid fa-earth-europe"></i><span>Seleções</span></a>
+    <a href="#" class="nav-item nav-liga" data-liga="Retro"><i class="fa-solid fa-clock-rotate-left"></i><span>Retro</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <span><i class="fa-solid fa-circle-dot" style="color:var(--accent)"></i> Sistema Online</span>
+  </div>
+</aside>
 
-  <aside class="sidebar">
-    <div class="logo">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M6 4l6-2 6 2v6c0 5-3.5 9-6 10-2.5-1-6-5-6-10V4z"></path>
-      </svg>
-      <span>Jersey Stock</span>
+<!-- MAIN -->
+<div class="main-wrapper">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+    <div class="topbar-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="globalSearch" placeholder="Pesquisar cliente, clube, rastreio..."/>
     </div>
+    <div class="topbar-actions">
+      <button class="btn-icon" id="notifBtn" title="Alertas"><i class="fa-solid fa-bell"></i><span class="badge" id="alertBadge">0</span></button>
+      <button class="btn-primary" id="topAddBtn"><i class="fa-solid fa-plus"></i> Adicionar</button>
+    </div>
+  </header>
 
-    <nav>
-      <a href="#">Dashboard</a>
-      <a href="#">Stock</a>
-      <a href="#">Clientes</a>
-      <a href="#">Envios</a>
-      <a href="#">Relatórios</a>
-    </nav>
-  </aside>
+  <!-- PAGES -->
+  <main class="page-content">
 
-  <main class="main-content">
-
-    <header>
-      <h1>Gestão de Stock</h1>
-    </header>
-
-    <section class="cards">
-      <div class="card">
-        <h3>Total Stock</h3>
-        <p id="totalStock">0</p>
+    <!-- ===== DASHBOARD ===== -->
+    <section id="page-dashboard" class="page active">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <span class="page-sub" id="dashDate"></span>
       </div>
 
-      <div class="card">
-        <h3>Lucro Total</h3>
-        <p id="lucroTotal">0€</p>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(99,102,241,.15);color:#818cf8"><i class="fa-solid fa-shirt"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">Total Camisolas</span>
+            <span class="kpi-value" id="kpiTotal">0</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(34,197,94,.12);color:#4ade80"><i class="fa-solid fa-warehouse"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">Stock Disponível</span>
+            <span class="kpi-value" id="kpiDisp">0</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(251,146,60,.12);color:#fb923c"><i class="fa-solid fa-bag-shopping"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">Vendidas</span>
+            <span class="kpi-value" id="kpiVend">0</span>
+          </div>
+        </div>
+        <div class="kpi-card kpi-highlight">
+          <div class="kpi-icon" style="background:rgba(251,191,36,.12);color:#fbbf24"><i class="fa-solid fa-euro-sign"></i></div>
+          <div class="kpi-info">
+            <span class="kpi-label">Lucro Total</span>
+            <span class="kpi-value" id="kpiLucro">€0.00</span>
+          </div>
+        </div>
       </div>
 
-      <div class="card">
-        <h3>Produtos Vendidos</h3>
-        <p id="vendidos">0</p>
+      <div class="dash-grid">
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-triangle-exclamation" style="color:#fb923c"></i> Alertas de Stock Baixo</h2>
+          </div>
+          <div class="alert-list" id="alertList"><p class="empty-msg">Sem alertas</p></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-fire" style="color:#f43f5e"></i> Mais Vendidos</h2>
+          </div>
+          <div class="top-list" id="topList"><p class="empty-msg">Sem dados</p></div>
+        </div>
+        <div class="card card-full">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-chart-bar" style="color:#818cf8"></i> Visão Geral por Liga</h2>
+          </div>
+          <div class="league-bars" id="leagueBars"></div>
+        </div>
       </div>
     </section>
 
-    <section class="form-section">
-      <h2>Adicionar Produto</h2>
-
-      <div class="form-grid">
-        <input type="text" id="liga" placeholder="Liga">
-        <input type="text" id="clube" placeholder="Clube">
-        <input type="text" id="epoca" placeholder="Época">
-
-        <select id="tipo">
-          <option>Fan Version</option>
-          <option>Player Version</option>
-        </select>
-
-        <select id="tamanho">
-          <option>S</option>
-          <option>M</option>
-          <option>L</option>
-          <option>XL</option>
-        </select>
-
-        <input type="number" id="quantidade" placeholder="Quantidade">
-        <input type="number" id="preco" placeholder="Preço Camisola">
-        <input type="number" id="frete" placeholder="Frete">
-        <input type="number" id="venda" placeholder="Preço Venda">
-
-        <input type="text" id="cliente" placeholder="Nome Cliente">
-        <input type="text" id="telefone" placeholder="Telefone">
-        <input type="text" id="morada" placeholder="Morada">
-        <input type="text" id="cep" placeholder="Código Postal / CEP">
-        <input type="text" id="pais" placeholder="País">
-        <input type="text" id="localidade" placeholder="Localidade">
-        <input type="text" id="rastreio" placeholder="Código Rastreio">
+    <!-- ===== STOCK ===== -->
+    <section id="page-stock" class="page">
+      <div class="page-header">
+        <h1 class="page-title">Gestão de Stock</h1>
+        <button class="btn-primary" id="addProdBtn"><i class="fa-solid fa-plus"></i> Novo Produto</button>
       </div>
 
-      <button onclick="adicionarProduto()">Adicionar Produto</button>
+      <div class="filters-bar">
+        <select id="fLiga" class="filter-select"><option value="">Todas as Ligas</option></select>
+        <select id="fClube" class="filter-select"><option value="">Todos os Clubes</option></select>
+        <select id="fTamanho" class="filter-select">
+          <option value="">Tamanho</option>
+          <option>S</option><option>M</option><option>L</option><option>XL</option>
+        </select>
+        <select id="fEstado" class="filter-select">
+          <option value="">Estado</option>
+          <option>Disponível</option><option>Reservado</option><option>Vendido</option>
+        </select>
+        <button class="btn-ghost" id="clearFilters"><i class="fa-solid fa-xmark"></i> Limpar</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="stockTable">
+          <thead>
+            <tr>
+              <th>Liga</th><th>Clube</th><th>Época</th><th>Tipo</th><th>Tam.</th>
+              <th>Qtd.</th><th>Custo</th><th>Frete</th><th>Total</th><th>Venda</th><th>Lucro</th><th>Estado</th><th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+        <p class="empty-table" id="stockEmpty">Nenhum produto encontrado.</p>
+      </div>
     </section>
 
-    <section class="table-section">
-      <table>
-        <thead>
-          <tr>
-            <th>Clube</th>
-            <th>Tamanho</th>
-            <th>Qtd</th>
-            <th>Custo</th>
-            <th>Venda</th>
-            <th>Lucro</th>
-            <th>Cliente</th>
-            <th>Rastreio</th>
-          </tr>
-        </thead>
+    <!-- ===== CLIENTES ===== -->
+    <section id="page-clientes" class="page">
+      <div class="page-header">
+        <h1 class="page-title">Clientes &amp; Envios</h1>
+        <button class="btn-primary" id="addClienteBtn"><i class="fa-solid fa-plus"></i> Novo Cliente</button>
+      </div>
 
-        <tbody id="tabelaProdutos"></tbody>
-      </table>
+      <div class="filters-bar">
+        <select id="fcEstado" class="filter-select">
+          <option value="">Estado</option>
+          <option>Em preparação</option><option>Enviado</option><option>Entregue</option>
+        </select>
+        <button class="btn-ghost" id="clearClienteFilters"><i class="fa-solid fa-xmark"></i> Limpar</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="clienteTable">
+          <thead>
+            <tr>
+              <th>Cliente</th><th>Telefone</th><th>Localidade</th><th>País</th>
+              <th>Camisola</th><th>Rastreio</th><th>Estado</th><th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="clienteBody"></tbody>
+        </table>
+        <p class="empty-table" id="clienteEmpty">Nenhum cliente encontrado.</p>
+      </div>
     </section>
 
   </main>
 </div>
 
+<!-- ===== MODAL PRODUTO ===== -->
+<div class="modal-overlay" id="modalProd">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalProdTitle">Novo Produto</h2>
+      <button class="modal-close" data-close="modalProd"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="modal-form" id="formProd" onsubmit="return false">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Liga *</label>
+          <select id="pLiga" required>
+            <option value="">Selecionar</option>
+            <option>Primeira Liga</option><option>Premier League</option><option>La Liga</option>
+            <option>Serie A</option><option>Bundesliga</option><option>Seleções</option><option>Retro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Clube *</label>
+          <input type="text" id="pClube" placeholder="ex: Benfica" required/>
+        </div>
+        <div class="form-group">
+          <label>Época</label>
+          <input type="text" id="pEpoca" placeholder="ex: 2024/25"/>
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="pTipo">
+            <option>Fan Version</option><option>Player Version</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tamanho</label>
+          <select id="pTamanho">
+            <option>S</option><option>M</option><option>L</option><option>XL</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantidade *</label>
+          <input type="number" id="pQtd" min="0" value="1" required/>
+        </div>
+        <div class="form-group">
+          <label>Preço Camisola (€)</label>
+          <input type="number" id="pPreco" step="0.01" min="0" value="0" oninput="calcProd()"/>
+        </div>
+        <div class="form-group">
+          <label>Frete (€)</label>
+          <input type="number" id="pFrete" step="0.01" min="0" value="0" oninput="calcProd()"/>
+        </div>
+        <div class="form-group">
+          <label>Custo Total (€)</label>
+          <input type="number" id="pCustoTotal" readonly class="readonly-field"/>
+        </div>
+        <div class="form-group">
+          <label>Preço de Venda (€)</label>
+          <input type="number" id="pVenda" step="0.01" min="0" value="0" oninput="calcProd()"/>
+        </div>
+        <div class="form-group">
+          <label>Lucro (€)</label>
+          <input type="number" id="pLucro" readonly class="readonly-field lucro-field"/>
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="pEstado">
+            <option>Disponível</option><option>Reservado</option><option>Vendido</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" data-close="modalProd">Cancelar</button>
+        <button type="submit" class="btn-primary" id="saveProdBtn">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== MODAL CLIENTE ===== -->
+<div class="modal-overlay" id="modalCliente">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalClienteTitle">Novo Cliente</h2>
+      <button class="modal-close" data-close="modalCliente"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="modal-form" id="formCliente" onsubmit="return false">
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label>Nome Completo *</label>
+          <input type="text" id="cNome" required/>
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="text" id="cTel"/>
+        </div>
+        <div class="form-group">
+          <label>País</label>
+          <input type="text" id="cPais" value="Portugal"/>
+        </div>
+        <div class="form-group form-full">
+          <label>Morada *</label>
+          <input type="text" id="cMorada" required/>
+        </div>
+        <div class="form-group">
+          <label>Código Postal / CEP</label>
+          <input type="text" id="cCP"/>
+        </div>
+        <div class="form-group">
+          <label>Localidade / Cidade</label>
+          <input type="text" id="cCidade"/>
+        </div>
+        <div class="form-group">
+          <label>Produto (Camisola)</label>
+          <select id="cProduto"><option value="">Selecionar produto</option></select>
+        </div>
+        <div class="form-group">
+          <label>Código de Rastreio</label>
+          <input type="text" id="cRastreio"/>
+        </div>
+        <div class="form-group">
+          <label>Estado da Encomenda</label>
+          <select id="cEstado">
+            <option>Em preparação</option><option>Enviado</option><option>Entregue</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" data-close="modalCliente">Cancelar</button>
+        <button type="submit" class="btn-primary" id="saveClienteBtn">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="modal-overlay" id="modalConfirm">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h2>Confirmar</h2>
+      <button class="modal-close" data-close="modalConfirm"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p id="confirmMsg" style="padding:0 1.5rem 1rem;color:var(--text-2)">Tens a certeza?</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" data-close="modalConfirm">Cancelar</button>
+      <button class="btn-danger" id="confirmOkBtn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script src="script.js"></script>
 </body>
 </html>
-```
-
